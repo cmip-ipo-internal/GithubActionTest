@@ -17,7 +17,7 @@ jobs:
         run: |
           ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
           LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
-          echo "::set-output name=last_word::${LAST_WORD}"
+          echo "{last_word}={${LAST_WORD}}" >> $GITHUB_OUTPUT
 
       - name: Create Branch
         run: |
