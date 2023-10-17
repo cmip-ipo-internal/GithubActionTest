@@ -47,7 +47,7 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git add last-updated-file.txt new-file.txt
+          git add -A
           git commit -m "Update last updated file and create new file based on issue"
           git push origin $BRANCH_NAME
 
