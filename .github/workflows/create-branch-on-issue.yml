@@ -55,7 +55,7 @@ jobs:
         run: |
           git add -A
           git commit -m "Update last updated file and create new file based on issue"
-          git push origin $BRANCH_NAME
+          git push --set-upstream origin $BRANCH_NAME
 
       - name: Get Branch URL
         id: branch-url
