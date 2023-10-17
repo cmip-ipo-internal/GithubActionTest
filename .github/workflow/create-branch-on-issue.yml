@@ -1,0 +1,43 @@
+name: Create Branch on New Issue
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  create-branch-and-update-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Extract Last Word from Issue Title
+        id: extract-word
+        run: |
+          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
+          LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
+          echo "::set-output name=last_word::${LAST_WORD}"
+
+      - name: Create Branch
+        run: |
+          ISSUE_NUMBER=$(echo ${{ github.event.issue.number }})
+          BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.last_word }}"
+          git checkout -b $BRANCH_NAME
+          echo "This file was last updated at $(date)" > last-updated-file.txt
+
+      - name: Run Python Script
+        run: |
+          python script.py
+        # Replace 'script.py' with the actual name of your Python script.
+
+      - name: Commit and Push Changes
+        run: |
+          git add last-updated-file.txt new-file.txt
+          git commit -m "Update last updated file and create new file based on issue"
+          git push origin $BRANCH_NAME
