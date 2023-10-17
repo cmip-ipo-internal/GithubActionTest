@@ -16,6 +16,7 @@ jobs:
         run: |
           git config user.email "actions@wcrp-cmip.org"
           git config user.name "CMIP-IPO GitHub Action"
+          git config --global push.default current  # Set push.default to current
         shell: bash
 
       - name: Extract Last Word from Issue Title
