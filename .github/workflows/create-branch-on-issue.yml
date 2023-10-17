@@ -43,7 +43,7 @@ jobs:
           else
             echo "Issue processed successfully."
           fi
-        shell: bashplace 'script.py' with the actual name of your Python script.
+        shell: bash
 
       - name: Commit and Push Changes
         run: |
@@ -53,7 +53,7 @@ jobs:
 
       - name: Get Branch URL
         id: branch-url
-        run: echo "::set-output name=url::$(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})"
+        run: echo "{url}={$(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})}" >> $GITHUB_OUTPUT
 
       - name: Update Issue with Branch Link
         uses: actions/github-script@v4
