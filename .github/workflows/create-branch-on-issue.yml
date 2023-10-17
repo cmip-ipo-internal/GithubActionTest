@@ -26,10 +26,24 @@ jobs:
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
-      - name: Run Python Script
+      - name: Run Python script
+        id: run-python
         run: |
-          python .github/workflows/script.py
-        # Replace 'script.py' with the actual name of your Python script.
+          python .github/workflows/script.py "${{ github.event.issue.body }}"
+        env:
+          PYTHON_SCRIPT_OUTPUT: ${{ steps.run-python.outputs.output }}
+
+      - name: Check Python script output
+        run: |
+          echo "Python script output: $PYTHON_SCRIPT_OUTPUT"
+          if [[ $PYTHON_SCRIPT_OUTPUT == "FAILED"* ]]; then
+            echo "Issue processing failed. Closing the issue..."
+            gh issue close "${{ github.event.issue.number }}"
+            gh issue comment "${{ github.event.issue.number }}" --body "Processing failed with the following error: $PYTHON_SCRIPT_OUTPUT"
+          else
+            echo "Issue processed successfully."
+          fi
+        shell: bashplace 'script.py' with the actual name of your Python script.
 
       - name: Commit and Push Changes
         run: |
