@@ -73,9 +73,11 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git add -A
-          git commit -m "Update last updated file and create new file based on issue"
-          git push --set-upstream origin $BRANCH_NAME
+          if [[ $PYTHON_SCRIPT_OUTPUT != "FAILED"* ]]; then
+            git add -A
+            git commit -m "Update last updated file and create new file based on issue"
+            git push --set-upstream origin $BRANCH_NAME
+          fi
 
       - name: Get Branch URL
         id: branch-url
