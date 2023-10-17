@@ -28,7 +28,7 @@ jobs:
       - name: Create Branch
         run: |
           ISSUE_NUMBER=$(echo ${{ github.event.issue.number }})
-          BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.last_word }-test}"
+          BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.last_word }}-test"
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
