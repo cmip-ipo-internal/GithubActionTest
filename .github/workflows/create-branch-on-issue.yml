@@ -12,6 +12,12 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
+      - name: Set up Git
+        run: |
+          git config user.email "actions@wcrp-cmip.org"
+          git config user.name "CMIP-IPO GitHub Action"
+        shell: bash
+
       - name: Extract Last Word from Issue Title
         id: extract-word
         run: |
@@ -55,20 +61,20 @@ jobs:
         id: branch-url
         run: echo "{url}={$(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})}" >> $GITHUB_OUTPUT
 
-      - name: Update Issue with Branch Link
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const issue = github.context.payload.issue;
-            const branchUrl = core.getInput('branch_url');
-            const updatedBody = issue.body + `\n\nBranch created: [${BRANCH_NAME}](${branchUrl})`;
-            await github.rest.issues.update({
-              owner: issue.owner,
-              repo: issue.repo,
-              issue_number: issue.number,
-              body: updatedBody
-            });
-        env:
-          BRANCH_NAME: ${{ steps.extract-word.outputs.last_word }}
-          branch_url: ${{ steps.branch-url.outputs.url }}
+      # - name: Update Issue with Branch Link
+      #   uses: actions/github-script@v4
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const issue = github.context.payload.issue;
+      #       const branchUrl = core.getInput('branch_url');
+      #       const updatedBody = issue.body + `\n\nBranch created: [${BRANCH_NAME}](${branchUrl})`;
+      #       await github.rest.issues.update({
+      #         owner: issue.owner,
+      #         repo: issue.repo,
+      #         issue_number: issue.number,
+      #         body: updatedBody
+      #       });
+      #   env:
+      #     BRANCH_NAME: ${{ steps.extract-word.outputs.last_word }}
+      #     branch_url: ${{ steps.branch-url.outputs.url }}
