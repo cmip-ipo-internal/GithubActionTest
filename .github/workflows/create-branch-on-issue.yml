@@ -12,10 +12,13 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
-      - name: Set up Git
-        run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Extract Last Word from Issue Title
         id: extract-word
@@ -33,7 +36,7 @@ jobs:
 
       - name: Run Python Script
         run: |
-          python script.py
+          python .github/workflows/script.py
         # Replace 'script.py' with the actual name of your Python script.
 
       - name: Commit and Push Changes
@@ -41,3 +44,25 @@ jobs:
           git add last-updated-file.txt new-file.txt
           git commit -m "Update last updated file and create new file based on issue"
           git push origin $BRANCH_NAME
+
+      - name: Get Branch URL
+        id: branch-url
+        run: echo "::set-output name=url::$(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})"
+
+      - name: Update Issue with Branch Link
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = github.context.payload.issue;
+            const branchUrl = core.getInput('branch_url');
+            const updatedBody = issue.body + `\n\nBranch created: [${BRANCH_NAME}](${branchUrl})`;
+            await github.rest.issues.update({
+              owner: issue.owner,
+              repo: issue.repo,
+              issue_number: issue.number,
+              body: updatedBody
+            });
+        env:
+          BRANCH_NAME: ${{ steps.extract-word.outputs.last_word }}
+          branch_url: ${{ steps.branch-url.outputs.url }}
