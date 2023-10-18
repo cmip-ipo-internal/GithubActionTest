@@ -7,5 +7,5 @@ try:
   os.system(f'touch {sys.argv[1]+"test"}')
   print('yay dsjfdskljklj dklsjf ldks fdjslkj fdskljfd slkjf dslkj fdsklj fdsj l')
 
-except: 
-  print('FAILED')
+except Exception as err: 
+  print('FAILED',err)
