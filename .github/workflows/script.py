@@ -6,7 +6,7 @@ print(body)
 try:
   os.mkdir(sys.argv[1])
   os.system(f'touch {sys.argv[1]+"test"}')
-  print(sys.argv[1]+'yay dsjfdskljklj dklsjf ldks fdjslkj fdskljfd slkjf dslkj fdsklj fdsj l')
+  print(sys.argv[1]+'yay')
 
 except Exception as err: 
   print('FAILED',err)
