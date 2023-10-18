@@ -1,7 +1,7 @@
 import os 
 import sys
 
-body = os.environ['ISSUE_BODY']
+body = os.environ.keys()
 print(body)
 try:
   os.mkdir(sys.argv[1])
