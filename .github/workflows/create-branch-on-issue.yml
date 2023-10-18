@@ -45,7 +45,7 @@ jobs:
         id: run-python
         run: |
           PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}")
-          echo "PYTHON_SCRIPT_OUTPUT=${PYTHON_SCRIPT_OUTPUT}" >> $GITHUB_ENV
+          echo "PYTHON_SCRIPT_OUTPUT=${{PYTHON_SCRIPT_OUTPUT}}" >> $GITHUB_ENV
        
       - name: Check Python script output
         run: |
