@@ -3,25 +3,10 @@ name: Create Branch on New Issue
 on:
   issues:
     types: [opened, edited]
-    #   - opened
 
 jobs:
   create-branch-and-update-files:
     runs-on: ubuntu-latest
-    permissions:
-        actions: write
-        checks: write
-        contents: write
-        # deployments: write
-        # id-token: write
-        issues: write
-        discussions: write
-        # packages: write
-        # pages: write
-        # pull-requests: write
-        # repository-projects: write
-        # security-events: write
-        statuses: write
 
     steps:
       - name: Check out the repository
@@ -32,26 +17,27 @@ jobs:
           git config user.email "actions@wcrp-cmip.org"
           git config user.name "CMIP-IPO GitHub Action"
           git config credential.helper store
-          # echo "machine github.com login ${{ secrets.GH_TOKEN }}" > ~/.git-credentials
           git config --global user.email "actions@wcrp-cmip.org"
           git config --global user.name "CMIP-IPO GitHub Action"
-          git config --global push.default current  # Set push.default to current
-          GH_TOKEN=${{ secrets.GH_TOKEN }} >> $GITHUB_ENV
+          git config --global push.default current
+          GH_TOKEN=${{ secrets.GH_TOKEN }}
+          echo "GH_TOKEN=${GH_TOKEN}" >> $GITHUB_ENV
         shell: bash
 
       - name: Extract Last Word from Issue Title
         id: extract-word
         run: |
-          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
-          echo "ISSUE_BODY=${{ github.event.issue.body}}" >> $GITHUB_ENV
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          echo "ISSUE_TITLE=${ISSUE_TITLE}" >> $GITHUB_ENV
           LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
-          echo "${LAST_WORD}=${LAST_WORD}" >> $GITHUB_ENV
+          echo "LAST_WORD=${LAST_WORD}" >> $GITHUB_ENV
 
       - name: Create Branch
         run: |
-          ISSUE_NUMBER=$(echo ${{ github.event.issue.number }}) 
-          echo "ISSUE_NUMBER=${{ github.event.issue.number }}">> $GITHUB_ENV
-          echo "BRANCH_NAME=issue-${{ISSUE_NUMBER}}-${{ steps.extract-word.outputs.LAST_WORD }}-test" >> $GITHUB_ENV
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_ENV
+          BRANCH_NAME="issue-${ISSUE_NUMBER}-${LAST_WORD}-test"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
@@ -59,12 +45,9 @@ jobs:
         id: run-python
         run: |
           PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}")
-          echo "PYTHON_SCRIPT_OUTPUT=${PYTHON_SCRIPT_OUTPUT}" >> test.txt
-          echo $GITHUB_ENV
+          echo "PYTHON_SCRIPT_OUTPUT=${PYTHON_SCRIPT_OUTPUT}" >> $GITHUB_ENV
+          echo "::set-env name=PYTHON_SCRIPT_OUTPUT::${PYTHON_SCRIPT_OUTPUT}"
        
-        # env:
-        #   PYTHON_SCRIPT_OUTPUT: ${{ steps.run-python.outputs.output }}
-
       - name: Check Python script output
         run: |
           echo "Python script output: $PYTHON_SCRIPT_OUTPUT"
@@ -84,8 +67,8 @@ jobs:
             git commit -m "Update last updated file and create new file based on issue"
             git push --set-upstream origin $BRANCH_NAME
             BRANCH_LINK="[${BRANCH_NAME}]($(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME}))"
-            echo "${{BRANCH_LINK}};
-            gh issue comment ${{github.event.issue.number}} --body "The current branch (\`${BRANCH_NAME}\`) has been created and changes have been pushed. ${BRANCH_LINK}"
+            echo "${BRANCH_LINK}" >> $GITHUB_ENV
+            gh issue comment ${{ github.event.issue.number }} --body "The current branch (\`${BRANCH_NAME}\`) has been created and changes have been pushed. ${BRANCH_LINK}"
           fi
 
       - name: Get Branch URL
