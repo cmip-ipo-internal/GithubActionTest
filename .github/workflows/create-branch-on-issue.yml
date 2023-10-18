@@ -36,21 +36,21 @@ jobs:
           git config --global user.email "actions@wcrp-cmip.org"
           git config --global user.name "CMIP-IPO GitHub Action"
           git config --global push.default current  # Set push.default to current
-          GH_TOKEN=${{ secrets.GH_TOKEN }}
+          GH_TOKEN=${{ secrets.GH_TOKEN }} >> $GITHUB_ENV
         shell: bash
 
       - name: Extract Last Word from Issue Title
         id: extract-word
         run: |
-          export ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
-          export ISSUE_BODY=$(echo "${{ github.event.issue.body}}")
+          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}") >> $GITHUB_ENV
+          ISSUE_BODY=$(echo "${{ github.event.issue.body}}") >> $GITHUB_ENV
           LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
           echo "${LAST_WORD}=${LAST_WORD}" >> $GITHUB_ENV
 
       - name: Create Branch
         run: |
-          export ISSUE_NUMBER=$(echo ${{ github.event.issue.number }})
-          export BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.LAST_WORD }}-test"
+          ISSUE_NUMBER=$(echo ${{ github.event.issue.number }}) >> $GITHUB_ENV
+          BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.LAST_WORD }}-test" >> $GITHUB_ENV
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
