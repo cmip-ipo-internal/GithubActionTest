@@ -81,8 +81,7 @@ jobs:
             git add -A
             git commit -m "Update last updated file and create new file based on issue"
             git push --set-upstream origin $BRANCH_NAME
-            BRANCH_LINK="[${BRANCH_NAME}]($(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME}))"
-            echo "${BRANCH_LINK}" >> $GITHUB_ENV
+            echo "BRANCH_LINK=[${BRANCH_NAME}](${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})" >> $GITHUB_ENV
             gh issue comment ${{ github.event.issue.number }} --body "The current branch (\`${BRANCH_NAME}\`) has been created and changes have been pushed. ${BRANCH_LINK}"
           fi
 
