@@ -42,15 +42,15 @@ jobs:
       - name: Extract Last Word from Issue Title
         id: extract-word
         run: |
-          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
-          ISSUE_BODY=$(echo "${{ github.event.issue.body}}")
+          export ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
+          export ISSUE_BODY=$(echo "${{ github.event.issue.body}}")
           LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
           echo "${LAST_WORD}=${LAST_WORD}" >> $GITHUB_ENV
 
       - name: Create Branch
         run: |
-          ISSUE_NUMBER=$(echo ${{ github.event.issue.number }})
-          BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.LAST_WORD }}-test"
+          export ISSUE_NUMBER=$(echo ${{ github.event.issue.number }})
+          export BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.LAST_WORD }}-test"
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
