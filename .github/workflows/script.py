@@ -1,7 +1,7 @@
 import os 
 import sys
 
-body = os.environ['github.event.issue.body']
+body = os.environ['ISSUE_BODY']
 print(body)
 try:
   os.mkdir(sys.argv[1])
