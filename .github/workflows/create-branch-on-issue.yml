@@ -56,7 +56,7 @@ jobs:
       - name: Run Python script
         id: run-python
         run: |
-          echo "${{ github.event.issue.body }}" > issue${ISSUE_NUMBER}.delete
+          echo "${github.event.issue.body}" > issue${ISSUE_NUMBER}.delete
           PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}.delete")
           echo "PYTHON_SCRIPT_OUTPUT=${PYTHON_SCRIPT_OUTPUT}" >> $GITHUB_ENV
           # python .github/workflows/script.py "${{ github.event.issue.body }}"
