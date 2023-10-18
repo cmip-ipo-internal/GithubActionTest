@@ -1,7 +1,8 @@
 import os 
 import sys
 
-
+body = os.environ['github.event.issue.body']
+print(body)
 try:
   os.mkdir(sys.argv[1])
   os.system(f'touch {sys.argv[1]+"test"}')
