@@ -22,6 +22,7 @@ jobs:
           git config --global push.default current
           GH_TOKEN=${{ secrets.GH_TOKEN }}
           echo "GH_TOKEN=${GH_TOKEN}" >> $GITHUB_ENV
+          gh auth login --with-token < ${{ secrets.GH_TOKEN }}
         shell: bash
 
       - name: Extract Last Word from Issue Title
