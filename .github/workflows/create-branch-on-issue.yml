@@ -2,8 +2,8 @@ name: Create Branch on New Issue
 
 on:
   issues:
-    types:
-      - opened
+    types: [opened, edited]
+    #   - opened
 
 jobs:
   create-branch-and-update-files:
