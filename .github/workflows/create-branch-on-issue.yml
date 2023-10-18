@@ -43,6 +43,7 @@ jobs:
         id: extract-word
         run: |
           ISSUE_TITLE=$(echo "${{ github.event.issue.title }}")
+          ISSUE_BODY=$(echo "${{ github.event.issue.body}}")
           LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
           echo "${LAST_WORD}=${LAST_WORD}" >> $GITHUB_ENV
 
