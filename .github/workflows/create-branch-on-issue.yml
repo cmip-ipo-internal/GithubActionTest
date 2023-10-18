@@ -55,9 +55,11 @@ jobs:
       - name: Run Python script
         id: run-python
         run: |
-          python .github/workflows/script.py "${{ github.event.issue.body }}"
-        env:
-          PYTHON_SCRIPT_OUTPUT: ${{ steps.run-python.outputs.output }}
+          PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "${{ github.event.issue.body }}")
+          echo "PYTHON_SCRIPT_OUTPUT=${PYTHON_SCRIPT_OUTPUT}" >> $GITHUB_ENV
+          # python .github/workflows/script.py "${{ github.event.issue.body }}"
+        # env:
+        #   PYTHON_SCRIPT_OUTPUT: ${{ steps.run-python.outputs.output }}
 
       - name: Check Python script output
         run: |
