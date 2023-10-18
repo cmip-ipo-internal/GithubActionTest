@@ -23,7 +23,6 @@ jobs:
           GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
           echo "GH_TOKEN=${GH_TOKEN}" >> $GITHUB_ENV
           echo "GITHUB_TOKEN=${GH_TOKEN}" >> $GITHUB_ENV
-          gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
         shell: bash
 
       - name: Extract Last Word from Issue Title
