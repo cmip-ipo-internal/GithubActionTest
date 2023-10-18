@@ -42,15 +42,16 @@ jobs:
       - name: Extract Last Word from Issue Title
         id: extract-word
         run: |
-          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}") >> $GITHUB_ENV
-          ISSUE_BODY=$(echo "${{ github.event.issue.body}}") >> $GITHUB_ENV
+          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+          echo "ISSUE_BODY=${{ github.event.issue.body}}" >> $GITHUB_ENV
           LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
           echo "${LAST_WORD}=${LAST_WORD}" >> $GITHUB_ENV
 
       - name: Create Branch
         run: |
-          ISSUE_NUMBER=$(echo ${{ github.event.issue.number }}) >> $GITHUB_ENV
-          BRANCH_NAME="issue-${ISSUE_NUMBER}-${{ steps.extract-word.outputs.LAST_WORD }}-test" >> $GITHUB_ENV
+          ISSUE_NUMBER=$(echo ${{ github.event.issue.number }}) 
+          echo "ISSUE_NUMBER=${{ github.event.issue.number }}">> $GITHUB_ENV
+          echo "BRANCH_NAME=issue-${{ISSUE_NUMBER}}-${{ steps.extract-word.outputs.LAST_WORD }}-test" >> $GITHUB_ENV
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
@@ -84,7 +85,7 @@ jobs:
             git push --set-upstream origin $BRANCH_NAME
             BRANCH_LINK="[${BRANCH_NAME}]($(echo ${{ github.event.repository.html_url }}/tree/${BRANCH_NAME}))"
             echo "${{BRANCH_LINK}};
-            gh issue comment ${{github.event.issue.number}} --body "The current branch (\`${BRANCH_NAME}\`) has been created and changes have been pushed. ${{BRANCH_LINK}}"
+            gh issue comment ${{github.event.issue.number}} --body "The current branch (\`${BRANCH_NAME}\`) has been created and changes have been pushed. ${BRANCH_LINK}"
           fi
 
       - name: Get Branch URL
