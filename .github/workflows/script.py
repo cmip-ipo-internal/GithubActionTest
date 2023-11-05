@@ -115,7 +115,7 @@ def similarity_score(s1, s2):
 
 
 if __name__ == '__main__':
-    issue_fileds = get_issue_fields()
+    issue_fields = get_issue_fields()
     body = issue_fields.body
     varaibles = get_variables(body)
     # {'Issuer': 'dan', 'Name': 'York', 'ROR link': 'https://ror.org/04m01e293'} 'ACRONYM'
