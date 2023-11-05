@@ -125,7 +125,7 @@ if __name__ == '__main__':
     with open(filename, "w") as json_file:
         json.dump(body, json_file, indent=4)
 
-    variables = get_variables(body)
+    # variables = get_variables(body)
     
     # ror_id = variables['ROR']
     # ror_data = get_ror_data(ror_id)
