@@ -136,8 +136,8 @@ if __name__ == '__main__':
     # checks
     name = ror['indentifiers']['institution_name']
     threshold = 0.6
-    if similarity_score(name, variables['Name']) < threshold:
-        sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}")
+    if similarity_score(variables['Name'],name) < threshold:
+        sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}\n Simlilarity Levenshtein: {similarity_score(variables['Name'],name)} < threshold {threshold} ")
 
     
     if os.path.exists(filename):
