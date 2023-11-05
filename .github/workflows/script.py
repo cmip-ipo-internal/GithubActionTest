@@ -118,7 +118,7 @@ if __name__ == '__main__':
     filename = '../../institutions.json'
     
     issue_fields = get_issue_fields()
-    body = issue_fields.get('body','No Body Found'))
+    body = issue_fields.get('body','No Body Found')
     
     
     # {'Issuer': 'dan', 'Name': 'York', 'ROR link': 'https://ror.org/04m01e293'} 'ACRONYM'
