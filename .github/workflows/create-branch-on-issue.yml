@@ -63,9 +63,10 @@ jobs:
           issue_body=$(jq -r '.issue.body' $GITHUB_EVENT_PATH)
           echo "Issue Body: $issue_body"
           echo "::set-output name=issue_body::$issue_body"
+          $issue_body > issue_${ISSUE_NUMBER}.save
 
       - name: Run Python script with issue body
-        run: python script.py "${{ steps.get_issue_body.outputs.issue_body }}"  >> $GITHUB_ENV
+        run: python script.py 
         working-directory: .github/workflows/
 
       # - name: Run Python script
