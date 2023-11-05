@@ -40,53 +40,28 @@ jobs:
           echo "GITHUB_TOKEN=${GH_TOKEN}" >> $GITHUB_ENV
         shell: bash
 
-      - name: Extract Last Word from Issue Title
-        id: extract-word
+      - name: Extract Institute
+        id: get hame
         run: |
           ISSUE_TITLE="${{ github.event.issue.title }}"
           echo "ISSUE_TITLE=${ISSUE_TITLE}" >> $GITHUB_ENV
-          LAST_WORD=$(echo $ISSUE_TITLE | awk '{print $NF}')
-          echo "LAST_WORD=${LAST_WORD}" >> $GITHUB_ENV
-
+          TEXT_AFTER_COLON=$(echo "$ISSUE_TITLE" | awk -F':' '{print $2}' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/[[:space:]]/_/g')
+          echo "INSTITUTE=${TEXT_AFTER_COLON}" >> $GITHUB_ENV
+      
       - name: Create Branch
         run: |
           ISSUE_NUMBER="${{ github.event.issue.number }}"
           echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_ENV
-          BRANCH_NAME="issue-${ISSUE_NUMBER}-${LAST_WORD}-test"
+          BRANCH_NAME="issue-${ISSUE_NUMBER}-${INSTITUTE}-add"
           echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
           git checkout -b $BRANCH_NAME
-          echo "This file was last updated at $(date)" > last-updated-file.txt
 
-      - name: Get issue body
-        id: get_issue_body
-        run: |
-          issue_body=$(jq -r '.issue.body' $GITHUB_EVENT_PATH)
-          echo "Issue Body: $issue_body"
-          echo "::set-output name=issue_body::$issue_body"
-          # echo "ISSUE_BODY=${issue_body}" >> $GITHUB_ENV
-          # echo "$issue_body" > issue_${ISSUE_NUMBER}.save
-
-      - name: GH dump
-        id: get_issue_comp
-        run: |
-          issue_all=$(jq -r '.issue' $GITHUB_EVENT_PATH)
-          echo "Issue akk: $issue_all"
-          echo "::set-output name=issue_all::$issue_all"
-
-      - name: Run Python script with issue body
-        run: python script.py 
-        working-directory: .github/workflows/
-
-      - name: Write the issue to a file
-        run: python read_issue.py 
-        working-directory: .github/workflows/
-
-      # - name: Run Python script
-      #   id: run-python
-      #   run: |
-      #     PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}")
-      #     echo 'PYTHON_SCRIPT_OUTPUT="${PYTHON_SCRIPT_OUTPUT}"' >> $GITHUB_ENV
-       
+        - name: Run Python script
+          id: run-python
+          run: |
+            PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}")
+            echo 'PYTHON_SCRIPT_OUTPUT="${PYTHON_SCRIPT_OUTPUT}"' >> $GITHUB_ENV
+         
       - name: Check Python script output
         run: |
           echo "Python script output: $PYTHON_SCRIPT_OUTPUT"
