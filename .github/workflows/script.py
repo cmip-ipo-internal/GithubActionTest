@@ -119,13 +119,14 @@ if __name__ == '__main__':
     
     issue_fields = get_issue_fields()
     body = issue_fields
-    variables = get_variables(body)
+    
     
     # {'Issuer': 'dan', 'Name': 'York', 'ROR link': 'https://ror.org/04m01e293'} 'ACRONYM'
     with open(filename, "w") as json_file:
         json.dump(body, json_file, indent=4)
 
-
+    variables = get_variables(body)
+    
     # ror_id = variables['ROR']
     # ror_data = get_ror_data(ror_id)
     # ror = parse_ror_data(ror_data)
