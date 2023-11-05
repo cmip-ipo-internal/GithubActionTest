@@ -57,11 +57,22 @@ jobs:
           git checkout -b $BRANCH_NAME
           echo "This file was last updated at $(date)" > last-updated-file.txt
 
-      - name: Run Python script
-        id: run-python
+      - name: Get issue body
+        id: get_issue_body
         run: |
-          PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}")
-          echo 'PYTHON_SCRIPT_OUTPUT="${PYTHON_SCRIPT_OUTPUT}"' >> $GITHUB_ENV
+          issue_body=$(jq -r '.issue.body' $GITHUB_EVENT_PATH)
+          echo "Issue Body: $issue_body"
+          echo "::set-output name=issue_body::$issue_body"
+
+      - name: Run Python script with issue body
+        run: python script.py "${{ steps.get_issue_body.outputs.issue_body }}"  >> $GITHUB_ENV
+        working-directory: .github/workflows/
+
+      # - name: Run Python script
+      #   id: run-python
+      #   run: |
+      #     PYTHON_SCRIPT_OUTPUT=$(python .github/workflows/script.py "issue${ISSUE_NUMBER}")
+      #     echo 'PYTHON_SCRIPT_OUTPUT="${PYTHON_SCRIPT_OUTPUT}"' >> $GITHUB_ENV
        
       - name: Check Python script output
         run: |
