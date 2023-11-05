@@ -121,7 +121,7 @@ if __name__ == '__main__':
     # {'Issuer': 'dan', 'Name': 'York', 'ROR link': 'https://ror.org/04m01e293'} 'ACRONYM'
     print(variables)
 
-    ror_id = variables['ROR'].split('/')[-1]
+    ror_id = variables['ROR']
     ror_data = get_ror_data(ror_id)
     ror = parse_ror_data(ror_data)
 
