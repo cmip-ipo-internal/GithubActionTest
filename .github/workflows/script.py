@@ -57,7 +57,6 @@ with open('ouput.txt','w') as f:
     f.write('\n\n')
     f.write(str(sys.argv))
     f.write('\n\n')
-    f.write(str(os.env))
 
 
 try:
