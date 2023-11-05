@@ -103,14 +103,15 @@ def levenshtein_distance(s1, s2):
     
     return previous_row[-1]
 
-def similarity_score(s1, s2):
+def similarity_score(s1, s2, threshold=0.8):
     max_length = max(len(s1), len(s2))
     if max_length == 0:
         return 1.0
     
     distance = levenshtein_distance(s1, s2)
     similarity = 1.0 - (distance / max_length)
-    return similarity
+    
+    return similarity >= threshold
 
 
 
