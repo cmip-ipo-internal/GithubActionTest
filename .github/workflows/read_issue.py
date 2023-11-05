@@ -31,7 +31,8 @@ if __name__ == "__main__":
     issue_fields = get_issue_fields()
     if issue_fields:
         # Specify the filename where you want to write the issue fields as JSON
-        filename = "issue_fields.json"
+        # written files should not be in workflow rep. 
+        filename = "../issue_fields.json"
         write_to_file(issue_fields, filename)
     else:
         print("Failed to retrieve issue fields.")
