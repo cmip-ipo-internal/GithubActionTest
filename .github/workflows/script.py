@@ -131,7 +131,10 @@ if __name__ == '__main__':
         sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}")
 
     filename = '../../institutions.json'
-    data = json.load(open(filename, 'r'))
+    if os.path.exists(filename):
+        data = json.load(open(filename, 'r'))
+    else: 
+        data = {}
 
     acronym = variables['Acronym']
     if acronym in data:
