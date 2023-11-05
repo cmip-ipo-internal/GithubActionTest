@@ -1,14 +1,18 @@
-import subprocess
 import json
+import os
+import sys
 
 def get_issue_fields():
     try:
-        # Run jq command to extract all fields of the issue from GITHUB_EVENT_PATH
-        result = subprocess.run(['jq', '.issue', '$GITHUB_EVENT_PATH'], capture_output=True, text=True)
-        print(f'Command output: {result.stdout}')  # Debugging line
-        # Parse the output as JSON
-        issue_fields = json.loads(result.stdout.strip())
-        return issue_fields
+        # Get the path to the GitHub event payload file
+        event_path = os.getenv('GITHUB_EVENT_PATH')
+
+        # Read the contents of the event payload file
+        with open(event_path, 'r') as file:
+            event_data = json.load(file)
+            # Extract the entire .issue object
+            issue_fields = event_data.get('issue', {})
+            return issue_fields
     except Exception as e:
         print(f"Error: {e}")
         return None
