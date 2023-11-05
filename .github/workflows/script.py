@@ -52,7 +52,7 @@ body = os.environ.keys()
 print(body)
 print(sys.argv)
 
-with open('ouput.txt','w') as f:
+with open('../ouput.txt','w') as f:
     f.write(str(body))
     f.write('\n\n')
     f.write(str(sys.argv))
