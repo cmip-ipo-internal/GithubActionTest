@@ -50,6 +50,7 @@ def parse_ror_data(ror_data):
 
 body = os.environ.keys()
 print(body)
+print(sys.argv)
 try:
   os.mkdir(sys.argv[1])
   os.system(f'touch {sys.argv[1]+"test"}')
