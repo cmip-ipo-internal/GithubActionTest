@@ -4,6 +4,7 @@ import requests
 import re
 import json
 from collections import OrderedDict
+from copy import deepcopy
 
 
 URL_TEMPLATE = 'https://api.ror.org/organizations/{}'
@@ -73,7 +74,7 @@ def get_issue_fields():
         with open(event_path, 'r') as file:
             event_data = json.load(file)
             # Extract the entire .issue object
-            issue_fields = event_data.get('issue', {})
+            issue_fields = deepcopy(event_data.get('issue', {}))
             return issue_fields
     except Exception as e:
         print(f"FAILED to read the Issue contents: {e}")
