@@ -118,50 +118,50 @@ if __name__ == '__main__':
     filename = '../../institutions.json'
     
     issue_fields = get_issue_fields()
-    body = issue_fields
+    body = issue_fields.get('body','No Body Found'))
     
     
     # {'Issuer': 'dan', 'Name': 'York', 'ROR link': 'https://ror.org/04m01e293'} 'ACRONYM'
-    with open(filename, "w") as json_file:
-        json.dump(body, json_file, indent=4)
-
-    # variables = get_variables(body)
-    
-    # ror_id = variables['ROR']
-    # ror_data = get_ror_data(ror_id)
-    # ror = parse_ror_data(ror_data)
-
-    # # checks
-    # name = ror['indentifiers']['institution_name']
-    # threshold = 0.6
-    # if similarity_score(name, variables['Name']) < threshold:
-    #     sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}")
-
-    
-    # if os.path.exists(filename):
-    #     data = json.load(open(filename, 'r'))
-    # else: 
-    #     data = {}
-
-    # acronym = variables['Acronym']
-    # if acronym in data:
-    #     sys.exit(f'FAILED: {acronym} already exists')
-
-    # rors = [i['indentifiers']['ror'] for i in data.values()]
-    # if ror_id in rors:
-    #     where = list(dict.keys())[rors.index(ror_id)]
-    #     sys.exit(f'FAILED: {ror_id} already exists in the list under key "{where}"')
-
-
-    # # final check that acronym already exists in ROR?
-
-    # data[acronym] = ror
-
-    # # Sort the dictionary by keys alphabetically and maintain order
-    # data = OrderedDict(sorted(data.items(), key=lambda item: item[0]))
-
     # with open(filename, "w") as json_file:
-    #     json.dump(data, json_file, indent=4)
+    #     json.dump(body, json_file, indent=4)
+
+    variables = get_variables(body)
+    
+    ror_id = variables['ROR']
+    ror_data = get_ror_data(ror_id)
+    ror = parse_ror_data(ror_data)
+
+    # checks
+    name = ror['indentifiers']['institution_name']
+    threshold = 0.6
+    if similarity_score(name, variables['Name']) < threshold:
+        sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}")
+
+    
+    if os.path.exists(filename):
+        data = json.load(open(filename, 'r'))
+    else: 
+        data = {}
+
+    acronym = variables['Acronym']
+    if acronym in data:
+        sys.exit(f'FAILED: {acronym} already exists')
+
+    rors = [i['indentifiers']['ror'] for i in data.values()]
+    if ror_id in rors:
+        where = list(dict.keys())[rors.index(ror_id)]
+        sys.exit(f'FAILED: {ror_id} already exists in the list under key "{where}"')
+
+
+    # final check that acronym already exists in ROR?
+
+    data[acronym] = ror
+
+    # Sort the dictionary by keys alphabetically and maintain order
+    data = OrderedDict(sorted(data.items(), key=lambda item: item[0]))
+
+    with open(filename, "w") as json_file:
+        json.dump(data, json_file, indent=4)
 
 
 
