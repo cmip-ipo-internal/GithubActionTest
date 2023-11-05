@@ -69,7 +69,7 @@ jobs:
       - name: GH dump
         id: get_issue_comp
         run: |
-          issue_all=$(jq -r '.issue.' $GITHUB_EVENT_PATH)
+          issue_all=$(jq -r '.issue' $GITHUB_EVENT_PATH)
           echo "Issue akk: $issue_all"
           echo "::set-output name=issue_all::$issue_all"
 
