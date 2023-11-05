@@ -115,11 +115,16 @@ def similarity_score(s1, s2):
 
 
 if __name__ == '__main__':
+    filename = '../../institutions.json'
+    
     issue_fields = get_issue_fields()
-    body = issue_fields['body']
+    body = issue_fields.body
     variables = get_variables(body)
+    
     # {'Issuer': 'dan', 'Name': 'York', 'ROR link': 'https://ror.org/04m01e293'} 'ACRONYM'
-    print(variables)
+    with open(filename, "w") as json_file:
+        json.dump(body, json_file, indent=4)
+
 
     ror_id = variables['ROR']
     ror_data = get_ror_data(ror_id)
@@ -131,7 +136,7 @@ if __name__ == '__main__':
     if similarity_score(name, variables['Name']) < threshold:
         sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}")
 
-    filename = '../../institutions.json'
+    
     if os.path.exists(filename):
         data = json.load(open(filename, 'r'))
     else: 
