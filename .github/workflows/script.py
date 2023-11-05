@@ -53,11 +53,11 @@ print(body)
 print(sys.argv)
 
 with open('ouput.txt','w') as f:
-    f.write(body)
+    f.write(str(body))
     f.write('\n\n')
-    f.write(sys.argv)
+    f.write(str(sys.argv))
     f.write('\n\n')
-    f.write(os.env)
+    f.write(str(os.env))
 
 
 try:
