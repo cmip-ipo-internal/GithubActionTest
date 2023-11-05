@@ -65,7 +65,13 @@ jobs:
           echo "::set-output name=issue_body::$issue_body"
           # echo "ISSUE_BODY=${issue_body}" >> $GITHUB_ENV
           # echo "$issue_body" > issue_${ISSUE_NUMBER}.save
-          
+
+      - name: GH dump
+        id: get_issue_comp
+        run: |
+          issue_all=$(jq -r '.issue.' $GITHUB_EVENT_PATH)
+          echo "Issue akk: $issue_all"
+          echo "::set-output name=issue_all::$issue_all"
 
       - name: Run Python script with issue body
         run: python script.py 
