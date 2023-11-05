@@ -56,7 +56,7 @@ jobs:
           git checkout -b $BRANCH_NAME
 
       - name: Run Python Check
-        run: python .github/workflows/read_issue.py
+        run: python script.py
         working-directory: .github/workflows/
         env:
           PYTHON_SCRIPT_OUTPUT: ${{ steps.run-python-script.outputs.stdout }}
