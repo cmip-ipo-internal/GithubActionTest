@@ -62,6 +62,7 @@ def get_variables(input_string):
     
     # Print extracted variables
     print(variables)
+    return variables
 
 
 
