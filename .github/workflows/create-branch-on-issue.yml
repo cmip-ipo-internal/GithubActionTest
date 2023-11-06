@@ -26,6 +26,17 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
+
+      - name: Check Action Suitability
+        run: |
+          if [[ "${{ contains(github.event.issue.title, 'Request to add Institution:') }}" == "true" ]]; then
+            echo "Issue title contains 'Request to add Institution:'. Perform your desired actions here."
+          else
+            echo "Issue title does not contain 'Request to add Institution:'. Workflow will be skipped."
+            exit 0
+          fi
+
+
       - name: Set up Git
         run: |
           git config user.email "actions@wcrp-cmip.org"
