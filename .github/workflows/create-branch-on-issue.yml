@@ -100,7 +100,7 @@ jobs:
             git push --force --set-upstream origin $BRANCH_NAME
             echo "BRANCH_LINK=[${BRANCH_NAME}](${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})" >> $GITHUB_ENV
             gh issue comment ${{ github.event.issue.number }} --body "The current branch (\`${BRANCH_NAME}\`) has been created and changes have been pushed. [${BRANCH_NAME}](${{ github.event.repository.html_url }}/tree/${BRANCH_NAME})"
-            gh pr create --base main --head "${BRANCH_NAME}" --title "Pull Request from Issue ${ISSUE_TITLE}" --body "Pull Request Description"
+            # gh pr create --base main --head "${BRANCH_NAME}" --title "Pull Request from Issue ${ISSUE_TITLE}" --body "Pull Request Description"
           else
             gh issue comment ${{ github.event.issue.number }} --body "Your entry failed: ${PYTHON_SCRIPT_OUTPUT}"
           fi
