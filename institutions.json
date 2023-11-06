@@ -1,0 +1,26 @@
+{
+    "YRK": {
+        "indentifiers": {
+            "institution_name": "University of York",
+            "aliases": [],
+            "acronyms": [],
+            "labels": [],
+            "ror": "04m01e293",
+            "url": [
+                "http://www.york.ac.uk/"
+            ],
+            "established": 1963,
+            "type": "Education"
+        },
+        "location": {
+            "lat": 53.95763,
+            "lon": -1.08271,
+            "city": "York",
+            "country": [
+                "United Kingdom",
+                "GB"
+            ]
+        },
+        "consortiums": []
+    }
+}
