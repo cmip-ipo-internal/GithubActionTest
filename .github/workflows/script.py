@@ -111,6 +111,10 @@ def similarity_score(s1, s2, threshold=0.8):
     distance = levenshtein_distance(s1, s2)
     similarity = 1.0 - (distance / max_length)
     
+    # If s2 is partially contained within s1, consider it a 100% match
+    if s2 in s1:
+        similarity = 1.0
+    
     return similarity >= threshold
 
 
@@ -137,8 +141,8 @@ if __name__ == '__main__':
     # checks
     name = ror['indentifiers']['institution_name']
     threshold = 0.6
-    if similarity_score(variables['Name'],name) < threshold:
-        sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}\n Simlilarity Levenshtein: {similarity_score(variables['Name'],name)} < threshold {threshold} ")
+    if similarity_score(name,variables['Name']) < threshold:
+        sys.exit(f"FAILED: The names are not similar enough. please confirm. \n Name provided: {variables['Name']} \n ROR given name: {name}\n Simlilarity Levenshtein: {similarity_score(name,variables['Name'])} < threshold {threshold} ")
 
     
     if os.path.exists(filename):
