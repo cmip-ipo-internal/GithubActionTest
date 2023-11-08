@@ -62,7 +62,7 @@ jobs:
             git show main:institutions.json > mainupdate.del
             # python .github/workflows/combine.py ../institutions.json mainupdate.del
             
-            python -c "import json, sys; merge_json = lambda file1, file2: json.dump({**json.load(open(file1)), **json.load(open(file2))}, open(file1, 'w'), indent=4) if len(sys.argv) == 3 else sys.exit('wrong number of arguments'); merge_json('./institutions.json','./mainupdate.del')")"
+            python -c "import json, sys; merge_json = lambda file1, file2: json.dump({**json.load(open(file1)), **json.load(open(file2))}, open(file1, 'w'), indent=4); merge_json('./institutions.json','./mainupdate.del')"
             
             rm test.del 
             rm mainupdate.del
