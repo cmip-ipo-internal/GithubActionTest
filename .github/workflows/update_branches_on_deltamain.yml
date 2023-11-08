@@ -31,7 +31,7 @@ jobs:
           branches=$(git branch -r --format='%(refname:short)' | grep -v 'main$')
           
           # Merge JSON files from the main branch
-          python merge_json.py main_file.json main_file.json
+          # python merge_json.py main_file.json main_file.json
           
           for branch in $branches; do
             echo "Merging JSON files from branch: $branch"
