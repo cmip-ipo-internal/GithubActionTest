@@ -74,7 +74,7 @@ jobs:
                 rm mainupdate.del
                 git rebase --continue
             fi
-            
+            git rebase --skip
             # Commit the changes after resolving conflicts
             git add -A;
             git commit -m "Merge JSON files from branch $branch"
