@@ -56,6 +56,8 @@ jobs:
 
             echo "checked ou "
             echo "$PWD"
+            echo "{${ls-a}}"
+            chmod +x .github/workflows/combine.py
             git show main:institutions.json > mainupdate.del
             python ../.github/workflows/combine.py ../institutions.json mainupdate.del
             rm test.del 
