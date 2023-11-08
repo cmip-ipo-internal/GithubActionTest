@@ -1,0 +1,51 @@
+
+name: Merge JSON Files from Branches
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  merge-json-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Merge JSON files from branches
+        run: |
+          branches=$(git branch -r --format='%(refname:short)' | grep -v 'main$')
+          
+          # Merge JSON files from the main branch
+          python merge_json.py main_file.json main_file.json
+          
+          for branch in $branches; do
+            echo "Merging JSON files from branch: $branch"
+            git checkout $branch
+            
+            # Attempt to merge changes from the main branch without creating a merge commit
+            git pull --rebase origin main
+            
+            # Handle merge conflicts programmatically
+            if [ $? -ne 0 ]; then
+              # Resolve conflicts using a merge tool or custom logic
+              # For example, using jq to resolve conflicts by merging the JSON files
+              
+              # jq -s '.[0] * .[1]' main_file.json main_file.json > merged.json
+              # mv merged.json main_file.json
+              git show main:institutions.json > test.del
+              
+              # Continue the rebase after resolving conflicts
+              git rebase --continue
+            fi
+            
+            # Commit the changes after resolving conflicts
+            git commit -am "Merge JSON files from branch $branch"
+            git push origin $branch
+          done
+          
+          # Switch back to the main branch
+          git checkout main
+
