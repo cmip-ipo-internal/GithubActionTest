@@ -28,8 +28,7 @@ jobs:
 
       - name: Merge JSON files from branches
         run: |
-          branches=$(git branch -r --format='%(refname:short)' | grep -v 'main$')
-          
+          branches=$(git ls-remote --heads origin | sed 's?.*refs/heads/??' | grep -v 'main$')
           # Merge JSON files from the main branch
           # python merge_json.py main_file.json main_file.json
           
