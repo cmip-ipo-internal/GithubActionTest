@@ -28,13 +28,15 @@ jobs:
 
       - name: Merge JSON files from branches
         run: |
+          git pull
+          git fetch --prune;
           branches=$(git ls-remote --heads origin | sed 's?.*refs/heads/??' | grep -v 'main$')
           # Merge JSON files from the main branch
           # python merge_json.py main_file.json main_file.json
           
           for branch in $branches; do
             echo "Merging JSON files from branch: $branch"
-            git checkout $branch
+            git checkout origin $branch
             
             # Attempt to merge changes from the main branch without creating a merge commit
             # git pull --rebase origin main
