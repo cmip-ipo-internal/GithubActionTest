@@ -60,8 +60,8 @@ jobs:
             
             # Commit the changes after resolving conflicts
             git add -A;
-            git commit -am "Merge JSON files from branch $branch"
-            git push origin $branch
+            git commit -m "Merge JSON files from branch $branch"
+            git push $branch
           done
           
           # Switch back to the main branch
