@@ -22,5 +22,31 @@
             ]
         },
         "consortiums": []
+    },
+    "ds": {
+        "indentifiers": {
+            "institution_name": "Dassault Syst\u00e8mes (United States)",
+            "aliases": [],
+            "acronyms": [
+                "DS"
+            ],
+            "labels": [],
+            "ror": "03fbqtm75",
+            "url": [
+                "https://www.3ds.com/"
+            ],
+            "established": 1981,
+            "type": "Company"
+        },
+        "location": {
+            "lat": 32.713962,
+            "lon": -117.167985,
+            "city": "San Diego",
+            "country": [
+                "United States",
+                "US"
+            ]
+        },
+        "consortiums": []
     }
 }
