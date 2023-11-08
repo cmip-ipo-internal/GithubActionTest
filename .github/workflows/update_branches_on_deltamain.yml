@@ -58,15 +58,22 @@ jobs:
             echo "$PWD"
             echo "{${ls-a}}"
             ls -a 
-            # chmod +x .github/workflows/combine.py
-            git show main:institutions.json > mainupdate.del
-            # python .github/workflows/combine.py ../institutions.json mainupdate.del
+
+            # Attempt to merge changes from the main branch without creating a merge commit
+            git pull --rebase origin main
             
-            python -c "import json, sys; merge_json = lambda file1, file2: json.dump({**json.load(open(file1)), **json.load(open(file2))}, open(file1, 'w'), indent=4); merge_json('./institutions.json','./mainupdate.del')"
+            # Handle merge conflicts programmatically
+            if [ $? -ne 0 ]; then
+                # chmod +x .github/workflows/combine.py
+                git show main:institutions.json > mainupdate.del
+                # python .github/workflows/combine.py ../institutions.json mainupdate.del
+                
+                python -c "import json, sys; merge_json = lambda file1, file2: json.dump({**json.load(open(file1)), **json.load(open(file2))}, open(file1, 'w'), indent=4); merge_json('./institutions.json','./mainupdate.del')"
             
-            rm test.del 
-            rm mainupdate.del
-            
+                rm test.del 
+                rm mainupdate.del
+                git rebase --continue
+            fi
             
             # Commit the changes after resolving conflicts
             git add -A;
