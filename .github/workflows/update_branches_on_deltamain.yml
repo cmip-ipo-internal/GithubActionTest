@@ -55,8 +55,11 @@ jobs:
             
 
             echo "checked ou "
-            git show main:institutions.json > test.del
-           
+            
+            git show main:institutions.json > mainupdate.del
+            python .github/workflows/combine.py institutions.json mainupdate.del
+            rm test.del 
+            rm mainupdate.del
             
             
             # Commit the changes after resolving conflicts
