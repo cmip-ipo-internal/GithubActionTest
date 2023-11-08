@@ -36,32 +36,19 @@ jobs:
           
           for branch in $branches; do
             echo "Merging JSON files from branch: $branch"
-            git checkout origin $branch
+            git stash 
+            git checkout $branch
             
-            # Attempt to merge changes from the main branch without creating a merge commit
-            # git pull --rebase origin main
 
             echo "checked ou "
             git show main:institutions.json > test.del
-            echo "saved";
-            # Handle merge conflicts programmatically
-            # if [ $? -ne 0 ]; then
-              # Resolve conflicts using a merge tool or custom logic
-              # For example, using jq to resolve conflicts by merging the JSON files
-              
-              # jq -s '.[0] * .[1]' main_file.json main_file.json > merged.json
-              # mv merged.json main_file.json
-              
-              
-              
-              # Continue the rebase after resolving conflicts
-              # git rebase --continue
-            # fi
+           
+            
             
             # Commit the changes after resolving conflicts
             git add -A;
             git commit -m "Merge JSON files from branch $branch"
-            git push $branch
+            git push origin $branch
           done
           
           # Switch back to the main branch
